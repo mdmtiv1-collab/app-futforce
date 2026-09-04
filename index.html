@@ -1435,18 +1435,74 @@
       overlay.classList.add('hidden');
     }
 
-    // SIMULADOR DE DESCARGAS DE PDF
-    function downloadPDF(fileName) {
+    // SISTEMA OFICIAL DE DESCARGAS DE PDF
+    function downloadPDF(itemKey, customName) {
+      let pdfUrl = 'pdfs/libro-162-rutinas-futforce.pdf';
+      let downloadName = 'Libro-Maestro-162-Rutinas-Futforce.pdf';
+      let displayName = '+162 Rutinas de Gimnasio y Funcional';
+
+      const key = (itemKey || '').toLowerCase();
+      if (key.includes('bono 1') || key.includes('bono #1') || key.includes('movilidad')) {
+        pdfUrl = 'pdfs/bono1-movilidad-futbolistas.pdf';
+        downloadName = 'Bono-1-Movilidad-para-Futbolistas.pdf';
+        displayName = 'Bono #1: Movilidad para Futbolistas';
+      } else if (key.includes('bono 2') || key.includes('bono #2') || key.includes('nutrici')) {
+        pdfUrl = 'pdfs/bono2-nutricion-deportiva.pdf';
+        downloadName = 'Bono-2-Nutricion-Deportiva.pdf';
+        displayName = 'Bono #2: Guía de Nutrición Deportiva';
+      } else if (key.includes('bono 3') || key.includes('bono #3') || key.includes('lesion') || key.includes('anti-lesiones')) {
+        pdfUrl = 'pdfs/bono3-protocolo-antilesiones.pdf';
+        downloadName = 'Bono-3-Protocolo-Anti-Lesiones.pdf';
+        displayName = 'Bono #3: Protocolo Anti-Lesiones';
+      } else if (key.includes('bono 4') || key.includes('bono #4') || key.includes('suplementaci')) {
+        pdfUrl = 'pdfs/bono4-guia-suplementacion.pdf';
+        downloadName = 'Bono-4-Guia-de-Suplementacion.pdf';
+        displayName = 'Bono #4: Guía de Suplementación';
+      } else if (key.includes('bloque 1')) {
+        displayName = 'Bloque 1 (Libro Maestro FUTFORCE)';
+      } else if (key.includes('bloque 2')) {
+        displayName = 'Bloque 2 (Libro Maestro FUTFORCE)';
+      } else if (key.includes('bloque 3')) {
+        displayName = 'Bloque 3 (Libro Maestro FUTFORCE)';
+      } else if (key.includes('bloque 4')) {
+        displayName = 'Bloque 4 (Libro Maestro FUTFORCE)';
+      } else if (key.includes('bloque 5')) {
+        displayName = 'Bloque 5 (Libro Maestro FUTFORCE)';
+      } else if (key.includes('plantilla')) {
+        displayName = 'Plantilla de Seguimiento (Libro Maestro)';
+      }
+
+      if (customName) downloadName = customName;
+
+      // Mostrar notificación Toast
       const toast = document.getElementById('download-toast');
       const text = document.getElementById('toast-text');
-      text.innerText = `¡Descargando ${fileName}!`;
-      toast.classList.remove('translate-y-[-100px]');
-      toast.classList.add('translate-y-0');
+      if (toast && text) {
+        text.innerText = `¡Descargando ${displayName}!`;
+        toast.classList.remove('translate-y-[-100px]');
+        toast.classList.add('translate-y-0');
 
-      setTimeout(() => {
-        toast.classList.remove('translate-y-0');
-        toast.classList.add('translate-y-[-100px]');
-      }, 3500);
+        setTimeout(() => {
+          toast.classList.remove('translate-y-0');
+          toast.classList.add('translate-y-[-100px]');
+        }, 3500);
+      }
+
+      // Disparar descarga real del archivo PDF
+      try {
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.setAttribute('download', downloadName);
+        link.setAttribute('target', '_blank');
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+        }, 200);
+      } catch (err) {
+        console.error('Error al descargar:', err);
+        window.open(pdfUrl, '_blank');
+      }
     }
   </script>
 
